@@ -12,6 +12,8 @@ public class Inventory : MonoBehaviour
 
     [SerializeField]
     private Item testitem;
+    [SerializeField]
+    private Item testitem2;
 
     /// <summary>
     /// 인벤토리에 아이템을 하나만 추가하는 메서드
@@ -35,16 +37,37 @@ public class Inventory : MonoBehaviour
         
     }
 
+    
+
+
+    ///// <summary>
+    ///// 해당 인덱스의 아이템을 갯수만큼 줄임. 수량이 0이 되면 해당 인덱스의 SO데이터를 없앰.
+    ///// </summary>
+    ///// <param name="_index"></param>
+    ///// <param name="_count"></param>
+    //public void RemoveItemIndex(int _index,int _count)
+    //{
+    //    inventory[_index].ItemDown(_count);
+    //    if (inventory[_index].isEmpty())
+    //        inventory[_index].ItemClear();
+    //}
+
     /// <summary>
-    /// 해당 인덱스의 아이템을 갯수만큼 줄임. 수량이 0이 되면 해당 인덱스의 SO데이터를 없앰.
+    /// 해당 아이템이 있는지 체크, 있으면 가장 앞의 슬롯에서 1개 제거
     /// </summary>
-    /// <param name="_index"></param>
-    /// <param name="_count"></param>
-    public void RemoveItem(int _index,int _count)
+    /// <param name="_item"></param>
+    public void RemoveItem(Item _item)
     {
-        inventory[_index].ItemDown(_count);
-        if (inventory[_index].isEmpty())
-            inventory[_index].ItemClear();
+        int index=FindLastSameItem(_item.Data);
+        if (index == -1)
+            Debug.LogError("아이템이 없습니다!");
+        else
+        {
+            inventory[index].ItemDown(1);
+            if (inventory[index].isEmpty())
+                inventory[index].ItemClear();
+        }
+        
     }
 
     private int FindFirstSameItem(ItemSO _data)
@@ -52,6 +75,16 @@ public class Inventory : MonoBehaviour
         for(int i=0;i<inventory.Length;i++)
         {
             if (inventory[i].CurItemData == _data&&!inventory[i].isFull())
+                return i;
+        }
+        return -1;
+    }
+
+    private int FindLastSameItem(ItemSO _data)
+    {
+        for (int i = inventory.Length-1; i >=0 ; i--)
+        {
+            if (inventory[i].CurItemData == _data)
                 return i;
         }
         return -1;
@@ -69,7 +102,7 @@ public class Inventory : MonoBehaviour
 
     public void AddManyItem(Item _item,int _count)
     {
-
+        // 인벤토리의 빈공간을 체크, 빈공간이 더 많으면 실행, 그렇지 않으면 거부
         if(HowManyItemSpace(_item)>=_count)
         {
             for (int i = 0; i < inventory.Length; i++)
@@ -121,6 +154,7 @@ public class Inventory : MonoBehaviour
 
     }
 
+    // AddManyItem을 발동하기전 빈공간의 수를 리턴하는 메서드
     private int HowManyItemSpace(Item _item)
     {
         int totalSpace = 0;
@@ -133,7 +167,7 @@ public class Inventory : MonoBehaviour
                 totalSpace += inventory[i].RemainToFull();
             }
         }
-        //코드가 여기를 진행한다는것은 아직 더 채워야 한다는 뜻
+       
         for (int i = 0; i < inventory.Length; i++)
         {
             if (!inventory[i].IsItem)
@@ -156,4 +190,26 @@ public class Inventory : MonoBehaviour
         AddItem(testitem);
     }
 
+    public void testAdd2()
+    {
+        AddItem(testitem2);
+    }
+
+    public void testRemove1()
+    {
+        RemoveItem(testitem);
+    }
+
+    public void testAddMany()
+    {
+        AddManyItem(testitem, 10);
+    }
+
+    public void testClear()
+    {
+        if (inventory[1].IsItem)
+            inventory[1].ItemClear();
+    }
+
+    
 }

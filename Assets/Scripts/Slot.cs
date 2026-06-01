@@ -65,7 +65,7 @@ public class Slot
 
     //여기 비었지?
     public bool isEmpty()
-    { return curItemMany >=0; }
+    { return curItemMany <=0; }
 
     /// <summary>
     /// 얼마나 더 들어갈 수 있는지 알려주는 메서드
