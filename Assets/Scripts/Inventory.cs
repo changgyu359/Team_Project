@@ -2,18 +2,20 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    private Slot[] inventory = new Slot[8];
+    private Slot[] inventory ;
 
-    private void Awake()
-    {
-        for(int i=0;i<inventory.Length;i++)
-            inventory[i] = new Slot();
-    }
 
     [SerializeField]
     private Item testitem;
     [SerializeField]
     private Item testitem2;
+
+    public void InitInventory()
+    {
+        inventory = new Slot[PlayerInventory.Instance.slotCount];
+        for (int i = 0; i < inventory.Length; i++)
+            inventory[i] = new Slot();
+    }
 
     #region 아이템 추가
 

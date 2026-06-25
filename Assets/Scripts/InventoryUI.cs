@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour
 {
@@ -9,14 +10,24 @@ public class InventoryUI : MonoBehaviour
     [SerializeField]
     private Inventory inven;
 
-    private SlotUI[] slotUIArray = new SlotUI[8];
+    [SerializeField]
+    private Image dragIcon;
+
+    private SlotUI[] slotUIArray = new SlotUI[12];
 
 
-    private void Start()
+ 
+
+    public void InitInventoryUI()
     {
-        for(int i = 0; i < slotUIArray.Length; i++)
+        slotUIArray = new SlotUI[PlayerInventory.Instance.slotCount];
+        if (dragIcon != null)
+            dragIcon.gameObject.SetActive(false);
+
+        for (int i = 0; i < slotUIArray.Length; i++)
         {
-            SlotUI slotUI = Instantiate(slotPF,inventoryPannel.transform);
+            SlotUI slotUI = Instantiate(slotPF, inventoryPannel.transform);
+            slotUI.Init(this);
             slotUIArray[i] = slotUI;
         }
         Redraw();
@@ -28,6 +39,31 @@ public class InventoryUI : MonoBehaviour
         {
             slotUIArray[i].ShowSlot(inven.GetSlot(i));
         }
+    }
+
+    public void StartDragIcon(Sprite itemSprite)
+    {
+        if (dragIcon == null) return;
+
+        dragIcon.sprite = itemSprite;
+
+        Color color = dragIcon.color;
+        color.a = 0.5f;
+        dragIcon.color = color;
+
+        dragIcon.gameObject.SetActive(true);
+    }
+
+    public void MoveDragIcon(Vector2 _mousePos)
+    {
+        if (dragIcon == null) return;
+        dragIcon.transform.position = _mousePos;
+    }
+
+    public void EndDragIcon()
+    {
+        if (dragIcon == null) return;
+        dragIcon.gameObject.SetActive(false);
     }
 
 }
