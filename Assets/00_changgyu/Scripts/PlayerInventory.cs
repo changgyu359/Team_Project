@@ -12,6 +12,8 @@ public class PlayerInventory : MonoBehaviour
     public Inventory playerInven;
     public InventoryUI playerInvenUI;
 
+    
+
     private void Awake()
     {
         if (instance == null)

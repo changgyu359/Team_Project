@@ -1,9 +1,7 @@
 using UnityEngine;
 
-public class MonsterPatrol : MonoBehaviour
+public class RabbitPatrol : MonoBehaviour
 {
-    
-    
     [SerializeField]
     private float minActionTime;
     [SerializeField]
@@ -17,12 +15,12 @@ public class MonsterPatrol : MonoBehaviour
 
     private float moveSpeed;
     private float actionTimer;
-    private int moveDirection=0;
+    private int moveDirection = 0;
 
 
-    
 
-    
+
+
 
 
     private void Awake()
@@ -41,15 +39,15 @@ public class MonsterPatrol : MonoBehaviour
 
     private void Update()
     {
-        actionTimer-= Time.deltaTime;
+        actionTimer -= Time.deltaTime;
 
-        if(actionTimer<=0)
+        if (actionTimer <= 0)
         {
             ChooseNextAction();
         }
 
         rb.linearVelocity = new Vector3(moveDirection * moveSpeed, rb.linearVelocity.y, rb.linearVelocity.z);
-        anim.SetFloat("Speed", moveDirection != 0 ? 1f : 0f);
+        
 
     }
 
@@ -57,24 +55,27 @@ public class MonsterPatrol : MonoBehaviour
 
     private void ChooseNextAction()
     {
-        
+
         int randomAction = Random.Range(0, 3);
 
-        if(randomAction==0)
+        if (randomAction == 0)
         {
             moveDirection = 0;
+            anim.SetBool("isWalking", false);
         }
-        else if(randomAction==1)
+        else if (randomAction == 1)
         {
             moveDirection = -1;
             transform.rotation = Quaternion.LookRotation(Vector3.left);
+            anim.SetBool("isWalking", true);
         }
-        else if(randomAction == 2)
+        else if (randomAction == 2)
         {
             moveDirection = 1;
             transform.rotation = Quaternion.LookRotation(Vector3.right);
+            anim.SetBool("isWalking", true);
         }
 
-        actionTimer = Random.Range(minActionTime,maxActionTime);
+        actionTimer = Random.Range(minActionTime, maxActionTime);
     }
 }

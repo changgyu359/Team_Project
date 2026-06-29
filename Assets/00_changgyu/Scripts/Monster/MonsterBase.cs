@@ -8,10 +8,18 @@ public class MonsterBase : MonoBehaviour,IDamageable
     [SerializeField]
     private Animator anim;
 
+
     private string monsterName;
+    
     private int monsterHP;
     private int monsterAtk;
+    public int MonsterAtk
+    { get { return monsterAtk;} }
     private float monsterSpeed;
+    public float MonsterSpeed
+    { get { return monsterSpeed; } }
+
+    
 
     public void TakeDamage(int _damage)
     {
@@ -23,7 +31,7 @@ public class MonsterBase : MonoBehaviour,IDamageable
             
     }
 
-    private void Start()
+    private void Awake()
     {
         monsterName = myData.monsterName;
         monsterHP = myData.monsterHP;
@@ -35,12 +43,10 @@ public class MonsterBase : MonoBehaviour,IDamageable
     {
         anim.SetBool("isDead", true);
         yield return new WaitForSeconds(3f);
+        gameObject.SetActive(false);
     }
 
-
-    private void Patrol()
-    {
-        
-    }
-
+    
+    
+   
 }

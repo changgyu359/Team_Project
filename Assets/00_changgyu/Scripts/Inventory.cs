@@ -10,6 +10,8 @@ public class Inventory : MonoBehaviour
     [SerializeField]
     private Item testitem2;
 
+   
+
     public void InitInventory()
     {
         inventory = new Slot[PlayerInventory.Instance.slotCount];

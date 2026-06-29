@@ -9,6 +9,8 @@ public class SplitPopupUI : MonoBehaviour
     private Slot sourceSlot;
     private Slot targetSlot;
 
+    
+
 
     public void OpenPopup(Slot _source,Slot _target)
     {
