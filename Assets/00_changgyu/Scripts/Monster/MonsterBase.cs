@@ -19,17 +19,15 @@ public class MonsterBase : MonoBehaviour,IDamageable
     public float MonsterSpeed
     { get { return monsterSpeed; } }
 
+    private Rigidbody rb;
+
+    public bool IsHit
+    { get; set; } = false;
+    public bool IsDead
+    { get; set; } = false;
     
 
-    public void TakeDamage(int _damage)
-    {
-        monsterHP -= _damage;
-
-        if (monsterHP <= 0)
-            StartCoroutine(Dead());
-
-            
-    }
+    
 
     private void Awake()
     {
@@ -37,6 +35,27 @@ public class MonsterBase : MonoBehaviour,IDamageable
         monsterHP = myData.monsterHP;
         monsterAtk = myData.monsterAtk;
         monsterSpeed = myData.monsterSpeed;
+        rb = GetComponent<Rigidbody>();
+    }
+
+    public void TakeDamage(int _damage)
+    {
+        if (IsDead) return;
+
+        monsterHP -= _damage;
+
+        if (monsterHP <= 0)
+        {
+            IsDead = true;
+            StartCoroutine(Dead());
+        }
+        else
+        {
+            StartCoroutine(HitCorou());
+        }
+
+
+
     }
 
     private IEnumerator Dead()
@@ -47,6 +66,17 @@ public class MonsterBase : MonoBehaviour,IDamageable
     }
 
     
+    private IEnumerator HitCorou()
+    {
+        IsHit = true;
+        anim.SetTrigger("isHit");
+
+        rb.linearVelocity = Vector3.zero;
+
+        yield return new WaitForSeconds(0.5f);
+
+        IsHit = false;
+    }
     
    
 }

@@ -46,7 +46,20 @@ public class RabbitPatrol : MonoBehaviour
             ChooseNextAction();
         }
 
+        Vector3 frontVec = new Vector3(transform.position.x + moveDirection * 0.2f, transform.position.y+0.1f, transform.position.z);
+
+
+        bool isGrounded = Physics.Raycast(frontVec, Vector3.down, out RaycastHit hit, transform.localScale.y / 2 + 0.2f, LayerMask.GetMask("Ground"));
+
+
+        if (!isGrounded && moveDirection != 0)
+        {
+            moveDirection = 0;
+            anim.SetBool("isWalking", false);
+        }
+
         rb.linearVelocity = new Vector3(moveDirection * moveSpeed, rb.linearVelocity.y, rb.linearVelocity.z);
+
         
 
     }
@@ -77,5 +90,12 @@ public class RabbitPatrol : MonoBehaviour
         }
 
         actionTimer = Random.Range(minActionTime, maxActionTime);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Vector3 frontVec = new Vector3(transform.position.x + moveDirection * 0.2f, transform.position.y+0.1f, transform.position.z);
+        Gizmos.DrawRay(frontVec, Vector3.down * (transform.localScale.y / 2 + 0.2f));
     }
 }

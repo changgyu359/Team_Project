@@ -5,8 +5,9 @@ public class WolfAI : MonoBehaviour
 {
     [Header("추적 및 공격 설정")]
     [SerializeField] private Transform player;
-    [SerializeField] private float chaseRange = 8f;   
-    [SerializeField] private float attackRange = 1.5f; 
+    [SerializeField] private float chaseRange = 5f;
+    [SerializeField] private float attackDetectedRange = 1.5f;
+    [SerializeField] private float attackRange = 2f; 
     [SerializeField] private float minActionTime = 1f;
     [SerializeField] private float maxActionTime = 3f;
 
@@ -38,13 +39,15 @@ public class WolfAI : MonoBehaviour
 
     private void Update()
     {
+        if (mBase.IsHit || mBase.IsDead) return;
+
         // 플레이어와의 거리 계산
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
         // 1. 상태 판단 (공격 중이 아닐 때만 상태 변경)
         if (!isAttacking)
         {
-            if (distanceToPlayer <= attackRange)
+            if (distanceToPlayer <= attackDetectedRange)
             {
                 currentState = State.Attack; // 사거리 내: 공격
             }
@@ -82,8 +85,20 @@ public class WolfAI : MonoBehaviour
             ChooseNextAction();
         }
 
-        rb.linearVelocity = new Vector3(moveDirection * moveSpeed, rb.linearVelocity.y, rb.linearVelocity.z);
+       
 
+        Vector3 frontVec = new Vector3(transform.position.x + moveDirection * 0.2f, transform.position.y + 0.2f, transform.position.z);
+
+
+        bool isGrounded = Physics.Raycast(frontVec, Vector3.down, out RaycastHit hit, transform.localScale.y / 2 + 0.2f, LayerMask.GetMask("Ground"));
+
+        if (!isGrounded && moveDirection != 0)
+        {
+            moveDirection = 0;
+
+        }
+
+        rb.linearVelocity = new Vector3(moveDirection * moveSpeed, rb.linearVelocity.y, rb.linearVelocity.z);
         // 걷기: 블렌드 트리의 Speed 파라미터에 1을 전달
         anim.SetFloat("Speed", moveDirection != 0 ? 1f : 0f);
     }
@@ -119,7 +134,7 @@ public class WolfAI : MonoBehaviour
         transform.rotation = Quaternion.LookRotation(moveDirection == 1 ? Vector3.right : Vector3.left);
 
         // 추적 시 이동 속도를 더 빠르게 적용 (예: 기본 속도의 1.5배)
-        float runSpeed = moveSpeed * 1.5f;
+        float runSpeed = moveSpeed * 4f;
         rb.linearVelocity = new Vector3(moveDirection * runSpeed, rb.linearVelocity.y, rb.linearVelocity.z);
 
         // 달리기: 블렌드 트리의 Speed 파라미터에 2를 전달
@@ -138,7 +153,7 @@ public class WolfAI : MonoBehaviour
         anim.SetTrigger("Attack");
 
         // 공격 애니메이션이 완전히 끝날 때까지 대기 (애니메이션 길이에 맞춰 수정하세요)
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(2.5f);
 
         isAttacking = false;
     }
@@ -152,4 +167,13 @@ public class WolfAI : MonoBehaviour
             player.GetComponent<IDamageable>()?.TakeDamage(mBase.MonsterAtk);
         }
     }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Vector3 frontVec = new Vector3(transform.position.x + moveDirection * 0.2f, transform.position.y + 0.2f, transform.position.z);
+        Gizmos.DrawRay(frontVec, Vector3.down * (transform.localScale.y / 2 + 0.2f));
+    }
+
+
 }

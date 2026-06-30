@@ -1,6 +1,7 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class MonsterPatrol : MonoBehaviour
+public class BearAI : MonoBehaviour
 {
     
     
@@ -48,7 +49,21 @@ public class MonsterPatrol : MonoBehaviour
             ChooseNextAction();
         }
 
+        
+        Vector3 frontVec = new Vector3(transform.position.x + moveDirection*0.2f, transform.position.y+0.2f, transform.position.z);
+        
+        
+        bool isGrounded = Physics.Raycast(frontVec, Vector3.down, out RaycastHit hit, transform.localScale.y/2+0.2f, LayerMask.GetMask("Ground"));
+
+       
+        if (!isGrounded&&moveDirection!=0)
+        {
+            moveDirection = 0;
+            
+        }
+
         rb.linearVelocity = new Vector3(moveDirection * moveSpeed, rb.linearVelocity.y, rb.linearVelocity.z);
+
         anim.SetFloat("Speed", moveDirection != 0 ? 1f : 0f);
 
     }
@@ -76,5 +91,12 @@ public class MonsterPatrol : MonoBehaviour
         }
 
         actionTimer = Random.Range(minActionTime,maxActionTime);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Vector3 frontVec = new Vector3(transform.position.x + moveDirection*0.2f, transform.position.y+0.2f, transform.position.z);
+        Gizmos.DrawRay(frontVec, Vector3.down * (transform.localScale.y / 2 + 0.2f));
     }
 }

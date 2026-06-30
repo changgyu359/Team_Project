@@ -1,10 +1,13 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class TempPlayer : MonoBehaviour,IDamageable
 {
     private int hp = 10;
     private float moveSpeed = 5f;
     private Rigidbody rb;
+    private List<IDamageable> enemies = new List<IDamageable>();
+    
 
     public void TakeDamage(int _damage)
     {
@@ -23,7 +26,26 @@ public class TempPlayer : MonoBehaviour,IDamageable
 
         rb.linearVelocity = new Vector3(moveX * moveSpeed, rb.linearVelocity.y, 0);
 
+        if(Input.GetKeyDown(KeyCode.Z))
+        {
+            Attack();
+        }
+    }
+
+    private void Attack()
+    {
         
+        foreach (IDamageable enemy in enemies)
+            enemy.TakeDamage(1);
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        IDamageable damageable = other.GetComponent<IDamageable>();
+        if(damageable != null&&!enemies.Contains(damageable))
+        {
+            enemies.Add(damageable);
+        }
     }
 
 }
