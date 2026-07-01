@@ -1920,10 +1920,10 @@ GameObject:
   m_Component:
   - component: {fileID: 7292658344771522932}
   - component: {fileID: 3734775969355451150}
-  - component: {fileID: 5156020426212804543}
   - component: {fileID: -5760866329092949015}
   - component: {fileID: -2744621531043544900}
   - component: {fileID: 8921906308483458629}
+  - component: {fileID: -7570035299759374302}
   m_Layer: 0
   m_Name: Bear_4 1
   m_TagString: Untagged
@@ -1970,20 +1970,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &5156020426212804543
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7962199819078159310}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4543cbe43a3104241bf7f682d99ef351, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MonsterPatrol
-  minActionTime: 3
-  maxActionTime: 4
 --- !u!54 &-5760866329092949015
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2046,6 +2032,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MonsterBase
   myData: {fileID: 11400000, guid: 0945a8076f101874fa89990b12add4d2, type: 2}
   anim: {fileID: 3734775969355451150}
+--- !u!114 &-7570035299759374302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7962199819078159310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d68443793ff9e3647b7ca31bef96b548, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WolfAI
+  player: {fileID: 0}
+  chaseRange: 5
+  attackDetectedRange: 1.5
+  attackRange: 2
+  minActionTime: 3
+  maxActionTime: 4
+  chaseTime: 2
+  chaseCooldownTime: 4
 --- !u!1 &8002475675295336084
 GameObject:
   m_ObjectHideFlags: 0

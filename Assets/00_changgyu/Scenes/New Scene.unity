@@ -603,6 +603,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -7570035299759374302, guid: f4092bbda29e7ba41b7c9e79d670bd5b, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 158014908}
     - target: {fileID: 7292658344771522932, guid: f4092bbda29e7ba41b7c9e79d670bd5b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -742,6 +746,8 @@ MonoBehaviour:
   attackRange: 2
   minActionTime: 1
   maxActionTime: 3
+  chaseTime: 2
+  chaseCooldownTime: 4
 --- !u!1 &1096978449
 GameObject:
   m_ObjectHideFlags: 0
